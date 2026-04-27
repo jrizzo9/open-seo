@@ -1,12 +1,12 @@
 # OpenSEO
 
-OpenSEO is an SEO tool for _the people_. If tools like Semrush or Ahrefs are too expensive or bloated, OpenSEO is a pay-as-you-go alternative that you actually control.
+OpenSEO is an SEO tool for *the people*. If tools like Semrush or Ahrefs are too expensive or bloated, OpenSEO is a pay-as-you-go alternative that you actually control.
 
 Easy to self-host and extend, but we have a managed version too:
 
 [openseo.so](https://openseo.so)
 
-![OpenSEO demo (placeholder)](https://github.com/user-attachments/assets/6a928771-66ff-486b-b131-a54a3943985f)
+OpenSEO demo (placeholder)
 
 ## Table of Contents
 
@@ -52,17 +52,17 @@ Top priorities:
 - MCP for Claude
 - Making the best agentic workflows for SEO
 
-If something important is missing, please join the [Discord](https://discord.gg/c9uGs3cFXr) or email me at ben@openseo.so and request it.
+If something important is missing, please join the [Discord](https://discord.gg/c9uGs3cFXr) or email me at [ben@openseo.so](mailto:ben@openseo.so) and request it.
 
 ## Community
 
-Email me: ben@openseo.so
+Email me: [ben@openseo.so](mailto:ben@openseo.so)
 Join Discord to chat: [Discord](https://discord.gg/c9uGs3cFXr)
 
 Follow along for updates:
 
 - Sign up for the mailing list on our website: [openseo.so](https://openseo.so)
-- Follow on X: https://x.com/bensenescu
+- Follow on X: [https://x.com/bensenescu](https://x.com/bensenescu)
 
 ## Pricing / Costs
 
@@ -89,7 +89,7 @@ Backlinks requires one more step beyond the API key: you also need DataForSEO Ba
 printf '%s' 'YOUR_LOGIN:YOUR_PASSWORD' | base64
 ```
 
-4. Set this as `DATAFORSEO_API_KEY` in your environment file:
+1. Set this as `DATAFORSEO_API_KEY` in your environment file:
 
 - Docker self-hosting: `.env`
 - Cloudflare: Set it in the workers UI
@@ -102,11 +102,11 @@ OpenSEO supports two self-hosting paths:
 - Docker for your homelab or local use (Recommended).
 - Cloudflare for use across multiple devices or for your team.
 
-_Docker_
+*Docker*
 
 Docker is recommended for getting started. It's super easy to get up and running once you install Docker.
 
-_Cloudflare_
+*Cloudflare*
 
 If you love OpenSEO and want to use it across multiple devices or with your team, you can host it on Cloudflare which we'll be a SaaS-like experience. Also, this will have automatic database backups and other nice convenience features. It's just a bit more effort to get started if you're unfamiliar with Cloudflare.
 
@@ -114,7 +114,7 @@ If you love OpenSEO and want to use it across multiple devices or with your team
 
 Prerequisites:
 
-- Install Docker: https://www.docker.com/products/docker-desktop/
+- Install Docker: [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
 
 Quickstart:
 
@@ -146,7 +146,7 @@ Use a pinned version tag in `.env` if preferred:
 OPEN_SEO_IMAGE=ghcr.io/every-app/open-seo:v1.2.3
 ```
 
-For more info, see [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
+For more info, see `[docs/SELF_HOSTING_DOCKER.md](./docs/SELF_HOSTING_DOCKER.md)`.
 
 ## Cloudflare Self-Hosting
 
@@ -154,9 +154,9 @@ For more info, see [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md
 
 Clicking this button opens a page to deploy OpenSEO in your Cloudflare account. If you do not have an account yet, it will take you to account creation first (OpenSEO works great on the free plan).
 
-Reference these docs while deploying since the Cloudflare UI doesn't indicate what steps you need to take: [`docs/SELF_HOSTING_CLOUDFLARE.md`](./docs/SELF_HOSTING_CLOUDFLARE.md).
+Reference these docs while deploying since the Cloudflare UI doesn't indicate what steps you need to take: `[docs/SELF_HOSTING_CLOUDFLARE.md](./docs/SELF_HOSTING_CLOUDFLARE.md)`.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/every-app/open-seo)
+[Deploy to Cloudflare](https://deploy.workers.cloudflare.com/?url=https://github.com/every-app/open-seo)
 
 ## Local Development
 
@@ -179,8 +179,7 @@ Configure .env.local:
 
 1. `cp .env.example .env.local`
 2. Add `DATAFORSEO_API_KEY` as a base64-encoded `login:password` value:
-
-   `printf '%s' 'YOUR_LOGIN:YOUR_PASSWORD' | base64`
+  `printf '%s' 'YOUR_LOGIN:YOUR_PASSWORD' | base64`
 
 Run Locally:
 
@@ -249,10 +248,10 @@ That means you can try OpenSEO for free with the starter credit, then decide if/
 
 ### Pricing sources
 
-- DataForSEO SERP API pricing: https://dataforseo.com/apis/serp-api/pricing
-- DataForSEO Labs pricing: https://dataforseo.com/pricing/dataforseo-labs/dataforseo-google-api
-- DataForSEO Backlinks pricing: https://dataforseo.com/pricing/backlinks/backlinks
-- DataForSEO Lighthouse API docs: https://docs.dataforseo.com/v3/on_page/lighthouse/overview/
+- DataForSEO SERP API pricing: [https://dataforseo.com/apis/serp-api/pricing](https://dataforseo.com/apis/serp-api/pricing)
+- DataForSEO Labs pricing: [https://dataforseo.com/pricing/dataforseo-labs/dataforseo-google-api](https://dataforseo.com/pricing/dataforseo-labs/dataforseo-google-api)
+- DataForSEO Backlinks pricing: [https://dataforseo.com/pricing/backlinks/backlinks](https://dataforseo.com/pricing/backlinks/backlinks)
+- DataForSEO Lighthouse API docs: [https://docs.dataforseo.com/v3/on_page/lighthouse/overview/](https://docs.dataforseo.com/v3/on_page/lighthouse/overview/)
 
 ### 1) Rank tracking
 
