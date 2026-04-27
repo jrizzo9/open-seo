@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Persist Keyword Research **Recent searches** in D1 (per project + user) so history survives cookie clears and syncs across devices.
+
 ### Fixed
 
 - Document local development environment setup using `.dev.vars` for Worker runtime variables (for example `DATAFORSEO_API_KEY`) to avoid Cloudflare Access config prompts in trusted local mode.

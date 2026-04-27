@@ -1,8 +1,13 @@
-import { z } from "zod";
-import { useLocalHistoryStore } from "@/client/hooks/useLocalHistoryStore";
-import { jsonCodec } from "@/shared/json";
+import { useCallback, useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  addKeywordSearchHistory,
+  getKeywordSearchHistory,
+  removeKeywordSearchHistory,
+} from "@/serverFunctions/keywords";
 
 interface SearchHistoryItem {
+  id: number;
   keyword: string;
   locationCode: number;
   locationName: string;
@@ -11,44 +16,75 @@ interface SearchHistoryItem {
 
 const MAX_HISTORY = 20;
 
-const searchHistoryItemSchema = z.object({
-  keyword: z.string(),
-  locationCode: z.number(),
-  locationName: z.string(),
-  timestamp: z.number(),
-});
-
-const searchHistorySchema = z.array(searchHistoryItemSchema);
-const searchHistoryCodec = jsonCodec(searchHistorySchema);
-
 export function useSearchHistory(projectId: string) {
-  const { history, isLoaded, addItem, removeItem, clearItems } =
-    useLocalHistoryStore<
-      SearchHistoryItem,
-      Omit<SearchHistoryItem, "timestamp">
-    >({
-      storageKey: `search-history:${projectId}`,
-      maxItems: MAX_HISTORY,
-      parse: (raw) => {
-        const parsed = searchHistoryCodec.safeParse(raw);
-        return parsed.success ? parsed.data : null;
-      },
-      isSameItem: (existing, next) =>
-        existing.keyword === next.keyword &&
-        existing.locationCode === next.locationCode,
-      createItem: (item) => ({
-        ...item,
-        timestamp: Date.now(),
+  const queryClient = useQueryClient();
+
+  const queryKey = useMemo(() => ["keyword-search-history", projectId], [projectId]);
+
+  const historyQuery = useQuery({
+    queryKey,
+    queryFn: async () =>
+      getKeywordSearchHistory({
+        data: { projectId },
       }),
-      getItemKey: (item) => item.timestamp,
-    });
+  });
+
+  const addMutation = useMutation({
+    mutationFn: async (input: {
+      keyword: string;
+      locationCode: number;
+      locationName: string;
+    }) =>
+      addKeywordSearchHistory({
+        data: { projectId, ...input },
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey });
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: async (id: number) =>
+      removeKeywordSearchHistory({
+        data: { projectId, id },
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey });
+    },
+  });
+
+  const history: SearchHistoryItem[] =
+    (historyQuery.data ?? []).slice(0, MAX_HISTORY).map((item) => ({
+      id: item.id,
+      keyword: item.keyword,
+      locationCode: item.locationCode,
+      locationName: item.locationName,
+      timestamp: item.searchedAt,
+    }));
+
+  const addSearch = useCallback(
+    (keyword: string, locationCode: number, locationName: string) => {
+      addMutation.mutate({ keyword, locationCode, locationName });
+    },
+    [addMutation],
+  );
+
+  const removeHistoryItem = useCallback(
+    (itemKey: number) => {
+      const found = history.find((h) => h.timestamp === itemKey);
+      if (!found) return;
+      removeMutation.mutate(found.id);
+    },
+    [history, removeMutation],
+  );
 
   return {
     history,
-    isLoaded,
-    addSearch: (keyword: string, locationCode: number, locationName: string) =>
-      addItem({ keyword, locationCode, locationName }),
-    clearHistory: clearItems,
-    removeHistoryItem: removeItem,
+    isLoaded: historyQuery.isSuccess || historyQuery.isError,
+    addSearch,
+    clearHistory: () => {
+      // Not used by UI today; can be added later if needed.
+    },
+    removeHistoryItem,
   };
 }

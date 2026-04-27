@@ -4,9 +4,13 @@ import {
   saveKeywordsSchema,
   getSavedKeywordsSchema,
   removeSavedKeywordsSchema,
+  getKeywordSearchHistorySchema,
+  addKeywordSearchHistorySchema,
+  removeKeywordSearchHistorySchema,
   serpAnalysisSchema,
 } from "@/types/schemas/keywords";
 import { KeywordResearchService } from "@/server/features/keywords/services/KeywordResearchService";
+import { KeywordSearchHistoryRepository } from "@/server/features/keywords/repositories/KeywordSearchHistoryRepository";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 
 export const researchKeywords = createServerFn({ method: "POST" })
@@ -63,3 +67,41 @@ export const getSerpAnalysis = createServerFn({ method: "POST" })
       context,
     ),
   );
+
+export const getKeywordSearchHistory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .inputValidator((data: unknown) => getKeywordSearchHistorySchema.parse(data))
+  .handler(async ({ context }) => {
+    return KeywordSearchHistoryRepository.listByProjectAndUser({
+      projectId: context.projectId,
+      userId: context.userId,
+    });
+  });
+
+export const addKeywordSearchHistory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .inputValidator((data: unknown) => addKeywordSearchHistorySchema.parse(data))
+  .handler(async ({ data, context }) => {
+    await KeywordSearchHistoryRepository.upsertSearch({
+      projectId: context.projectId,
+      userId: context.userId,
+      keyword: data.keyword,
+      locationCode: data.locationCode,
+      locationName: data.locationName,
+    });
+    return { ok: true } as const;
+  });
+
+export const removeKeywordSearchHistory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .inputValidator((data: unknown) =>
+    removeKeywordSearchHistorySchema.parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    await KeywordSearchHistoryRepository.removeById({
+      projectId: context.projectId,
+      userId: context.userId,
+      id: data.id,
+    });
+    return { ok: true } as const;
+  });

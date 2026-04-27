@@ -67,6 +67,22 @@ export const getSavedKeywordsSchema = z.object({
   projectId: z.string().min(1),
 });
 
+export const getKeywordSearchHistorySchema = z.object({
+  projectId: z.string().min(1),
+});
+
+export const addKeywordSearchHistorySchema = z.object({
+  projectId: z.string().min(1),
+  keyword: z.string().min(1),
+  locationCode: z.number().int().positive(),
+  locationName: z.string().min(1),
+});
+
+export const removeKeywordSearchHistorySchema = z.object({
+  projectId: z.string().min(1),
+  id: z.number().int().positive(),
+});
+
 export type ResearchKeywordsInput = z.infer<typeof researchKeywordsSchema>;
 export type SaveKeywordsInput = z.infer<typeof saveKeywordsSchema>;
 export type RemoveSavedKeywordsInput = z.infer<
@@ -80,6 +96,15 @@ export const serpAnalysisSchema = z.object({
 });
 
 export type GetSavedKeywordsInput = z.infer<typeof getSavedKeywordsSchema>;
+export type GetKeywordSearchHistoryInput = z.infer<
+  typeof getKeywordSearchHistorySchema
+>;
+export type AddKeywordSearchHistoryInput = z.infer<
+  typeof addKeywordSearchHistorySchema
+>;
+export type RemoveKeywordSearchHistoryInput = z.infer<
+  typeof removeKeywordSearchHistorySchema
+>;
 
 /* ------------------------------------------------------------------ */
 /*  URL search params schema for /p/$projectId/keywords                */

@@ -100,6 +100,37 @@ export const keywordMetrics = sqliteTable(
   ],
 );
 
+// Recent keyword research searches for a project + user (used for the
+// "Recent searches" UI on /keywords). This prevents losing history when
+// clearing cookies and allows syncing across devices.
+export const keywordSearchHistory = sqliteTable(
+  "keyword_search_history",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull(),
+    keyword: text("keyword").notNull(),
+    locationCode: integer("location_code").notNull(),
+    locationName: text("location_name").notNull(),
+    searchedAt: integer("searched_at").notNull(),
+  },
+  (table) => [
+    uniqueIndex("keyword_search_history_unique").on(
+      table.projectId,
+      table.userId,
+      table.keyword,
+      table.locationCode,
+    ),
+    index("keyword_search_history_project_user_searched_idx").on(
+      table.projectId,
+      table.userId,
+      table.searchedAt,
+    ),
+  ],
+);
+
 // ============================================================================
 // Rank Tracking tables
 // ============================================================================
